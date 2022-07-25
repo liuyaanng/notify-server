@@ -4,64 +4,67 @@
  */
 
 import dayjs, { weekToday } from '../../../utils/dayjs'
+import { getConfig } from '../../../utils/getConfig'
+const CONFIG = getConfig().loveMsg
 
 export const textTemplate = (data: TextTemplateProps) => {
   const { caiHongpi, sayLove, songLyrics, oneMagazines, netEaseCloud, oneWord, dayEnglish } = data
 
-  let text = '早安呀，我可爱的鱼崽崽~\n'
+  let text = `早上好呀，我可爱的${CONFIG.girl_name}~\n`
 
   // 工作日/休息日，需要排除节假日
   const week = weekToday()
-  if (['星期六', '星期日'].includes(week)) {
+  if (!['星期六', '星期日'].includes(week)) {
     text += `
-如果我鱼崽崽已经起床啦！崽崽向你说早安呦~，记得吃早饭呀😆\n
-嗯哼哼~今天可是${week}哦，上班别迟到了哦~`
-  }
-  else {
+臭宝臭宝，起床啦🌹
+今天又是想宝宝的一天哦～记得要吃早饭呀😆
+嗯哼哼~今天可是${week}哦，上班别迟到了哦~\n`
+  } else {
     text += `
-如果我鱼崽崽还没起床呀！崽崽就等着鱼崽起床给我说早安呦🤣
-嗯哼~，既然今天是${week}，就让你再睡会懒觉~下次可不能啦~😝\n`
+早上好呀！亲爱的老婆～
+嗯哼~，既然今天是${week}，就让你再睡会懒觉~😝\n`
   }
 
   // 添加笑话
-  if (caiHongpi) {
+  if (CONFIG.caiHongpi && caiHongpi) {
     //     text += `
     // 彩虹屁：
     text += `
 ${caiHongpi.content}\n`
   }
 
-  if (sayLove) {
+  if (CONFIG.sayLove && sayLove) {
     text += `
 ${sayLove.content}\n`
   }
 
   // 诗句
-  if (songLyrics) {
+  if (CONFIG.songLyrics && songLyrics) {
     text += `
 『${songLyrics.source}』${songLyrics.content}\n`
   }
 
-  if (oneMagazines) {
+  if (CONFIG.oneMagazines && oneMagazines) {
     text += `
 『ONE杂志』${oneMagazines.word}\n`
   }
 
-  if (netEaseCloud) {
+  if (CONFIG.netEaseCloud && netEaseCloud) {
     text += `
 『网易云音乐热评』${netEaseCloud.content}——${netEaseCloud.source}\n`
   }
 
   // 添加一句一言
-  if (oneWord) {
+  if (CONFIG.oneWord && oneWord) {
     text += `
 『一言』${oneWord.hitokoto}\n`
   }
 
   // 每日英语
-  if (dayEnglish) {
+  if (CONFIG.dayEnglish && dayEnglish) {
     text += `
-『每日英语（${dayjs(dayEnglish.date).format('ll')}』${dayEnglish.content}`
+『每日英语（${dayjs(dayEnglish.date).format('ll')}』
+${dayEnglish.content}`
   }
 
   return {
